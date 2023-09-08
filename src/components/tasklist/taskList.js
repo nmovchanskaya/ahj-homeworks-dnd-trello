@@ -6,12 +6,6 @@ export default class TaskList {
     this.name = name;
     this.tasks = [];
     this.loadFromLocalStorage();
-    /*tasks.forEach((item) => {
-      if (item.category === type) {
-        const task = new Task(item.text, item.category, item.id);
-        this.tasks.push(task);
-      }
-    }); */
   }
 
   add(task) {
@@ -39,7 +33,7 @@ export default class TaskList {
 
   loadFromLocalStorage() {
     const tasks = JSON.parse(localStorage.getItem(`taskList_${this.type}`));
-    if (tasks.length) {
+    if (tasks) {
       tasks.forEach((item) => {
         const task = new Task(item.text, item.category, item.id);
         this.tasks.push(task);

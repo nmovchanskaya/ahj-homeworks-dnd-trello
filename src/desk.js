@@ -21,9 +21,6 @@ export default class Desk {
   }
 
   onMouseUp(e) {
-    //if (this.emptyDiv) {
-    //  this.emptyDiv.remove();
-    //}
     const mouseUpItem = e.target;
 
     if (mouseUpItem.className === 'task') {
@@ -88,24 +85,15 @@ export default class Desk {
     this.timeout = setTimeout(() => this.createEmptySpace(e), 200);
   }
 
+  //create empty space before current task
   createEmptySpace(e) {
-    //if (this.emptyDiv) {
-    //  this.emptyDiv.remove();
-    //}
     if (this.taskWithSpace) {
       this.taskWithSpace.style.borderTop = 0;
     }
 
     if (e.target.className === 'task') {
-      //const parent = e.target.parentElement;
       e.target.style.borderTop = `${this.actualElement.offsetHeight}px solid lightgray`;
       this.taskWithSpace = e.target;
-      //this.emptyDiv = document.createElement('div');
-      //this.emptyDiv.style.height = `${this.actualElement.offsetHeight}px`;
-      //console.log(this.emptyDiv);
-      //console.log(e.target);
-      //console.log(parent);
-      //parent.insertBefore(this.emptyDiv, e.target);
     }
   }
 

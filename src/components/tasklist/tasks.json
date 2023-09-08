@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "text": "first task",
+        "category": "todo"
+    },
+    {
+        "id": 2,
+        "text": "second task",
+        "category": "todo"
+    },
+    {
+        "id": 3,
+        "text": "third task",
+        "category": "todo"
+    },
+    {
+        "id": 4,
+        "text": "fourth task",
+        "category": "inprogress"
+    },
+    {
+        "id": 5,
+        "text": "fifth task",
+        "category": "inprogress"
+    },
+    {
+        "id": 6,
+        "text": "sixth task",
+        "category": "inprogress"
+    },
+    {
+        "id": 7,
+        "text": "seventh task",
+        "category": "inprogress"
+    },
+    {
+        "id": 8,
+        "text": "eighth task",
+        "category": "done"
+    },
+    {
+        "id": 9,
+        "text": "ninth task",
+        "category": "done"
+    },
+    {
+        "id": 10,
+        "text": "tenth task",
+        "category": "done"
+    }
+]

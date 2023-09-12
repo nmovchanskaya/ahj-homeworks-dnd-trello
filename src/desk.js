@@ -116,6 +116,7 @@ export default class Desk {
 
     if (e.target.className === 'task') {
       e.target.style.borderTop = `${this.actualElement.offsetHeight}px solid lightgray`;
+      e.target.style.transition = `border 0.5s`;
       this.taskWithSpace = e.target;
     }
   }

@@ -9,7 +9,7 @@ export default class Desk {
     this.taskWidgetDone = new TaskWidget('done', 'Done');
 
     this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseOver = this.onMouseOver.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
   }
 
@@ -20,7 +20,7 @@ export default class Desk {
     this.taskWidgetDone.bindToDOM();
   }
 
-  //return tasks inside the container
+  // return tasks inside the container
   getTasks(container, type) {
     const taskElems = Array.from(container.querySelectorAll('.task'));
     const tasks = [];
@@ -32,7 +32,7 @@ export default class Desk {
     return tasks;
   }
 
-  //update widget with the tasks
+  // update widget with the tasks
   updateWidgets(tasks, type) {
     if (type === 'todo') {
       this.taskWidgetTodo.update(tasks);
@@ -59,7 +59,6 @@ export default class Desk {
 
       // if we move task to another column - update it also
       if (taskContainer.dataset.type !== container.dataset.type) {
-
         const tasksTo = this.getTasks(taskContainer, taskContainer.dataset.type);
         this.updateWidgets(tasksTo, taskContainer.dataset.type);
       }
@@ -70,15 +69,22 @@ export default class Desk {
       this.actualElement = undefined;
 
       document.documentElement.removeEventListener('mouseup', this.onMouseUp);
-      document.documentElement.removeEventListener('mouseover', this.onMouseOver);
+      document.documentElement.removeEventListener('mousemove', this.onMouseMove);
     }
 
-    //if we don't have any elements in target column - create first
+    // if we don't have any elements in target column - create first
     const taskQty = e.target.querySelectorAll('.task').length;
-    if (e.target.classList.contains('column') && taskQty === 0) {
-
+    if ((e.target.classList.contains('column')
+        || e.target.classList.contains('column_title')
+        || e.target.classList.contains('task__button_add'))
+        && taskQty === 0) {
       // find task container inside target column
-      const taskContainer = e.target.querySelector('.task__container');
+      let taskContainer;
+      if (e.target.classList.contains('column')) {
+        taskContainer = e.target.querySelector('.task__container');
+      } else {
+        taskContainer = e.target.closest('div.column').querySelector('.task__container');
+      }
       taskContainer.insertBefore(this.actualElement, null);
 
       const container = document.querySelector(`.task__container_${this.actualType}`);
@@ -93,11 +99,11 @@ export default class Desk {
       this.actualElement = undefined;
 
       document.documentElement.removeEventListener('mouseup', this.onMouseUp);
-      document.documentElement.removeEventListener('mouseover', this.onMouseOver);
+      document.documentElement.removeEventListener('mousemove', this.onMouseMove);
     }
   }
 
-  onMouseOver(e) {
+  onMouseMove(e) {
     this.actualElement.style.top = `${e.clientY}px`;
     this.actualElement.style.left = `${e.clientX}px`;
 
@@ -108,7 +114,7 @@ export default class Desk {
     this.timeout = setTimeout(() => this.createEmptySpace(e), 200);
   }
 
-  //create empty space before current task
+  // create empty space before current task
   createEmptySpace(e) {
     if (this.taskWithSpace) {
       this.taskWithSpace.style.borderTop = 0;
@@ -116,7 +122,7 @@ export default class Desk {
 
     if (e.target.className === 'task') {
       e.target.style.borderTop = `${this.actualElement.offsetHeight}px solid lightgray`;
-      e.target.style.transition = `border 0.5s`;
+      // e.target.style.transition = `border 0.5s`;
       this.taskWithSpace = e.target;
     }
   }
@@ -128,10 +134,11 @@ export default class Desk {
       this.actualElement = e.target;
       this.actualType = e.target.parentElement.dataset.type;
 
+      this.actualElement.style.width = `${this.actualElement.offsetWidth}px`;
       this.actualElement.classList.add('dragged');
 
       document.documentElement.addEventListener('mouseup', this.onMouseUp);
-      document.documentElement.addEventListener('mouseover', this.onMouseOver);
+      document.documentElement.addEventListener('mousemove', this.onMouseMove);
     }
   }
 

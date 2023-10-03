@@ -16,8 +16,7 @@ export default class TaskWidget {
 
   addFormMarkup() {
     return `
-        <textarea class="task__add_input" name="task_text" placeholder="Type description of new task" rows="5" cols="25" required>
-        </textarea>
+        <textarea class="task__add_input" name="task_text" placeholder="Type description of new task" rows="5" cols="25" required></textarea>
         <input type="submit" value="Add task" class="task__add_submit">
         <input type="button" value="Cancel" class="task__add_cancel">
     `;

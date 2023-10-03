@@ -45,6 +45,7 @@ export default class Desk {
 
   onMouseUp(e) {
     const mouseUpItem = e.target;
+    const taskQty = e.target.querySelectorAll('.task').length;
 
     if (mouseUpItem.className === 'task') {
       const taskContainer = mouseUpItem.parentElement;
@@ -62,8 +63,10 @@ export default class Desk {
         const tasksTo = this.getTasks(taskContainer, taskContainer.dataset.type);
         this.updateWidgets(tasksTo, taskContainer.dataset.type);
       }
-
-      this.taskWithSpace.style.borderTop = 0;
+      
+      if (this.taskWithSpace) {
+        this.taskWithSpace.style.borderTop = 0;
+      }
 
       this.actualElement.classList.remove('dragged');
       this.actualElement = undefined;
@@ -71,13 +74,12 @@ export default class Desk {
       document.documentElement.removeEventListener('mouseup', this.onMouseUp);
       document.documentElement.removeEventListener('mousemove', this.onMouseMove);
     }
+    else if ((e.target.classList.contains('column')
+      || e.target.classList.contains('column_title')
+      || e.target.classList.contains('task__button_add'))
+      && taskQty === 0) {
+      // if we don't have any elements in target column - create first
 
-    // if we don't have any elements in target column - create first
-    const taskQty = e.target.querySelectorAll('.task').length;
-    if ((e.target.classList.contains('column')
-        || e.target.classList.contains('column_title')
-        || e.target.classList.contains('task__button_add'))
-        && taskQty === 0) {
       // find task container inside target column
       let taskContainer;
       if (e.target.classList.contains('column')) {
@@ -95,6 +97,13 @@ export default class Desk {
       const tasksTo = this.getTasks(taskContainer, taskContainer.dataset.type);
       this.updateWidgets(tasksTo, taskContainer.dataset.type);
 
+      this.actualElement.classList.remove('dragged');
+      this.actualElement = undefined;
+
+      document.documentElement.removeEventListener('mouseup', this.onMouseUp);
+      document.documentElement.removeEventListener('mousemove', this.onMouseMove);
+    } else {
+      // if we did mouse up in another place
       this.actualElement.classList.remove('dragged');
       this.actualElement = undefined;
 
@@ -120,10 +129,12 @@ export default class Desk {
       this.taskWithSpace.style.borderTop = 0;
     }
 
-    if (e.target.className === 'task') {
-      e.target.style.borderTop = `${this.actualElement.offsetHeight}px solid lightgray`;
-      // e.target.style.transition = `border 0.5s`;
-      this.taskWithSpace = e.target;
+    if (this.actualElement) {
+      if (e.target.className === 'task') {
+        e.target.style.borderTop = `${this.actualElement.offsetHeight}px solid lightgray`;
+        // e.target.style.transition = `border 0.5s`;
+        this.taskWithSpace = e.target;
+      }
     }
   }
 

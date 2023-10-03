@@ -63,7 +63,7 @@ export default class Desk {
         const tasksTo = this.getTasks(taskContainer, taskContainer.dataset.type);
         this.updateWidgets(tasksTo, taskContainer.dataset.type);
       }
-      
+
       if (this.taskWithSpace) {
         this.taskWithSpace.style.borderTop = 0;
       }
@@ -114,7 +114,7 @@ export default class Desk {
 
   onMouseMove(e) {
     this.actualElement.style.top = `${e.clientY}px`;
-    this.actualElement.style.left = `${e.clientX}px`;
+    this.actualElement.style.left = `${e.clientX - this.shiftX}px`;
 
     // create space for the moving element
     if (this.timeout) {
@@ -147,6 +147,7 @@ export default class Desk {
 
       this.actualElement.style.width = `${this.actualElement.offsetWidth}px`;
       this.actualElement.classList.add('dragged');
+      this.shiftX = e.offsetX;
 
       document.documentElement.addEventListener('mouseup', this.onMouseUp);
       document.documentElement.addEventListener('mousemove', this.onMouseMove);
